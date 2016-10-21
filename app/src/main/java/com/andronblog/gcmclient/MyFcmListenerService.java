@@ -34,46 +34,51 @@ public class MyFcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFcmListenerService";
 
-    /**
-     * Called when message is received.
-     *
-     * @param from SenderID of the sender.
-     * @param data Data bundle containing message data as key/value pairs.
-     *             For Set of keys use data.keySet().
-     */
     @Override
-    public void onMessageReceived(RemoteMessage message) {
-        String from = message.getFrom();
-        Map data = message.getData();
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        String from = remoteMessage.getFrom();
         Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Data: " + data.toString());
 
-        sendNotification(from);
+        // Check if message contains a data payload.
+        Map data = remoteMessage.getData();
+        if (data.size() > 0) {
+            Log.d(TAG, "Message data payload: " + data);
+        }
+
+        // Check if message contains a notification payload.
+        String body = "null";
+        if (remoteMessage.getNotification() != null) {
+            body = remoteMessage.getNotification().getBody();
+            Log.d(TAG, "Message Notification Body: " + body);
+        }
+
+        sendNotification(from, body);
     }
 
+    private int mId = 5000;
     /**
      * Create and show a simple notification containing the received GCM message.
      *
      * @param message GCM message received.
      */
-    private void sendNotification(String message) {
+    private void sendNotification(String from, String message) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, mId++, intent, 0);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
+                .setContentTitle("FCM msg from " + from)
                 .setContentText(message)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        int id = (int) System.currentTimeMillis();
+        notificationManager.notify(id, notificationBuilder.build());
     }
 }
