@@ -2,12 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andronblog.gcmclient">
 
-    <permission
-        android:name="com.andronblog.gcmclient.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.andronblog.gcmclient.permission.C2D_MESSAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,32 +16,21 @@
             </intent-filter>
         </activity>
 
-        <!-- [START gcm_receiver] -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="com.andronblog.gcmclient.gcm" />
-            </intent-filter>
-        </receiver>
-        <!-- [END gcm_receiver] -->
-
-        <!-- [START gcm_listener] -->
         <service
-            android:name=".MyGcmListenerService"
+            android:name=".MyFcmListenerService"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- [END gcm_listener] -->
 
         <service
-            android:name=".RegistrationIntentService"
-            android:exported="false"></service>
+            android:name=".MyInstanceIDListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

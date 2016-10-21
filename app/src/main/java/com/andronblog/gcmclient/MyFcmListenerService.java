@@ -22,15 +22,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
-public class MyGcmListenerService extends GcmListenerService {
+import java.util.Map;
 
-    private static final String TAG = "MyGcmListenerService";
+public class MyFcmListenerService extends FirebaseMessagingService {
+
+    private static final String TAG = "MyFcmListenerService";
 
     /**
      * Called when message is received.
@@ -39,36 +41,15 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param data Data bundle containing message data as key/value pairs.
      *             For Set of keys use data.keySet().
      */
-    // [START receive_message]
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
+    public void onMessageReceived(RemoteMessage message) {
+        String from = message.getFrom();
+        Map data = message.getData();
         Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
-        Log.d(TAG, "Bundle: " + data.toString());
+        Log.d(TAG, "Data: " + data.toString());
 
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
-        }
-
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
-        sendNotification(message);
-        // [END_EXCLUDE]
+        sendNotification(from);
     }
-    // [END receive_message]
 
     /**
      * Create and show a simple notification containing the received GCM message.
