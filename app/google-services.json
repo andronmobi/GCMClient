@@ -19,20 +19,8 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.andronblog.gcmclient",
-            "certificate_hash": "D584CC1D520988B6035320A89ACF255A78738A58"
+            "certificate_hash": "d584cc1d520988b6035320a89acf255a78738a58"
           }
-        },
-        {
-          "client_id": "119007590842-u7tcri4t058diu14iih2j1c36ffve18u.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "119007590842-bb8piuodil3ijq2mvkdeafjs1golhb65.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "119007590842-umfg4lnblgcpdhj4cs9r1klo10c662cp.apps.googleusercontent.com",
-          "client_type": 3
         },
         {
           "client_id": "119007590842-6paqds0ojfps2gkr5lkpda0eud78mf4h.apps.googleusercontent.com",
