@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.andronblog.gcmclient">
+    package="com.andronblog.gcmclient"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,11 +21,27 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="wonderpushInitializerClass"
+            android:value="com.andronblog.gcmclient.WonderPushInitializerImpl"
+            tools:replace="android:value" />
+
         <service
             android:name=".MyFcmListenerService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.wonderpush.sdk.WonderPushGcmListenerService"
+            tools:node="remove" />
+        <service
+            android:name=".LequipeGcmNotificationListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
 

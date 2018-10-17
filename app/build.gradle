@@ -10,8 +10,19 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+
+        manifestPlaceholders = [
+                wonderpushDefaultActivity : 'com.andronblog.gcmclient.MainActivity',
+                wonderpushNotificationIcon: '@drawable/ic_stat_ic_notification'
+        ]
     }
     buildTypes {
+        debug {
+            // WonderPush
+            // Project: L'Équipe DEV
+            resValue "string", "wonderpush_client_id", "19fdf75a7d28a5522c4d73d221f49ae6bd9d1a32"
+            resValue "string", "wonderpush_secret", "1a9a7d64e56021588f9c43d9bdcbf7503134c72cf021137c977d89f10b048ef3"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -24,6 +35,10 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
 //    compile 'com.google.firebase:firebase-messaging:17.3.3'
     compile 'com.google.firebase:firebase-core:16.0.4'
+    implementation ('com.wonderpush:wonderpush-android-sdk:1.2.7.0') {
+        exclude group: 'com.google.android.gms', module: 'play-services-gcm'
+    }
+    implementation 'com.google.android.gms:play-services-gcm:16.0.0'
     testCompile 'junit:junit:4.12'
 }
 
