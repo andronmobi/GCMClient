@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <permission
+        android:name="com.andronblog.gcmclient.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.andronblog.gcmclient.permission.C2D_MESSAGE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -26,17 +31,17 @@
             android:value="com.andronblog.gcmclient.WonderPushInitializerImpl"
             tools:replace="android:value" />
 
-        <service
-            android:name=".MyFcmListenerService"
-            android:exported="false" >
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-        <service
-            android:name="com.wonderpush.sdk.WonderPushGcmListenerService"
-            tools:node="remove" />
+                <category android:name="com.andronblog.gcmclient.gcm" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".LequipeGcmNotificationListenerService"
             android:exported="false">
@@ -44,6 +49,10 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".RegistrationIntentService"
+            android:exported="false"/>
 
     </application>
 
